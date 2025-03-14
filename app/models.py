@@ -22,7 +22,14 @@ class Medicine(Base):
     expiry_date = Column(DateTime, nullable=False)
     supplier_id = Column(Integer, ForeignKey("suppliers.id"))
     reorder_level = Column(Integer, default=10)
-
+    
+    # New fields from the CSV dataset
+    category = Column(String, nullable=True)
+    dosage_form = Column(String, nullable=True)
+    strength = Column(String, nullable=True)
+    indication = Column(String, nullable=True)
+    classification = Column(String, nullable=True)
+    
     supplier = relationship("Supplier", back_populates="medicines")
 
 class Supplier(Base):
