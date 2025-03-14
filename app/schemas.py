@@ -2,12 +2,10 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
-
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
-
 
 class UserResponse(BaseModel):
     id: int
@@ -16,7 +14,7 @@ class UserResponse(BaseModel):
     role: str
 
     class Config:
-        from_attributes = True  # Fix: Replacing `orm_mode = True` (Deprecated in Pydantic v2)
+        from_attributes = True  # For Pydantic v2
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -26,16 +24,25 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+# Updated Medicine schemas reflecting the new fields
 class MedicineBase(BaseModel):
     name: str
-    quantity: int
-    price: float
+    batch_no: str
+    stock: int
+    expiry_date: datetime
+    reorder_level: int
+    category: Optional[str] = None
+    dosage_form: Optional[str] = None
+    strength: Optional[str] = None
+    indication: Optional[str] = None
+    classification: Optional[str] = None
 
 class MedicineCreate(MedicineBase):
     pass
 
 class MedicineResponse(MedicineBase):
     id: int
+    supplier_id: int
 
     class Config:
         from_attributes = True
@@ -50,10 +57,10 @@ class SaleCreate(SaleBase):
 class SaleResponse(SaleBase):
     id: int
     total_price: float
-    date_sold: datetime  # Fix: Use datetime.datetime instead of just datetime
+    date_sold: datetime
 
     model_config = {
-        "arbitrary_types_allowed": True  # Fix: Allows Pydantic to handle datetime types properly
+        "arbitrary_types_allowed": True
     }
 
 class PurchaseBase(BaseModel):
@@ -65,8 +72,8 @@ class PurchaseCreate(PurchaseBase):
 
 class PurchaseResponse(PurchaseBase):
     id: int
-    date_purchased: datetime  # Fix: Use datetime.datetime instead of just datetime
+    date_purchased: datetime
 
     model_config = {
-        "arbitrary_types_allowed": True  # Fix: Ensures datetime works in Pydantic v2
+        "arbitrary_types_allowed": True
     }

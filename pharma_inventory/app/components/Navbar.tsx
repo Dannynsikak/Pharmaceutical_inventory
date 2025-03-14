@@ -13,7 +13,7 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            href="/pharmaceutical-listing"
+            href="/dashboard"
             className="text-gray-600 hover:text-indigo-600"
           >
             Dashboard
@@ -22,10 +22,10 @@ const Navbar = () => {
             Login
           </Link>
           <Link
-            href="/contact"
+            href="/register"
             className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
           >
-            Contact Us
+            Sign Up
           </Link>
         </div>
       </div>
