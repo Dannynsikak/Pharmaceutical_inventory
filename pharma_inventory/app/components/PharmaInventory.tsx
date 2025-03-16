@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface Medicine {
   id: number;
@@ -20,6 +21,8 @@ interface Medicine {
 const StockComponent = () => {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Number of items per page
   const router = useRouter();
 
   useEffect(() => {
@@ -35,13 +38,12 @@ const StockComponent = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Ensure token is sent correctly
+            Authorization: `Bearer ${token}`,
           },
         });
 
         if (res.status === 401) {
           console.log("Unauthorized: Redirecting to login");
-          // localStorage.removeItem("userToken");
           router.push("/login");
           return;
         }
@@ -61,6 +63,14 @@ const StockComponent = () => {
     checkAuthentication();
   }, [router]);
 
+  // Calculate total pages
+  const totalPages = Math.ceil(medicines.length / itemsPerPage);
+
+  // Get medicines for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentMedicines = medicines.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Stock Inventory</h2>
@@ -76,7 +86,7 @@ const StockComponent = () => {
           </tr>
         </thead>
         <tbody>
-          {medicines.map((med) => (
+          {currentMedicines.map((med) => (
             <tr key={med.id} className="text-center border">
               <td className="border p-2">{med.name}</td>
               <td className="border p-2">{med.stock}</td>
@@ -85,11 +95,44 @@ const StockComponent = () => {
               </td>
               <td className="border p-2">{med.batch_no}</td>
               <td className="border p-2">${med.price.toFixed(2)}</td>
-              {/* Display price with 2 decimal places */}
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center mt-4">
+        <Button
+          variant="outline"
+          type="button"
+          className={`px-4 py-2 mx-2 rounded ${
+            currentPage === 1
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-500 text-white"
+          }`}
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+
+        <span className="mx-4 text-lg">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button
+          type="button"
+          className={`px-4 py-2 mx-2 rounded ${
+            currentPage === totalPages
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-500 text-white"
+          }`}
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

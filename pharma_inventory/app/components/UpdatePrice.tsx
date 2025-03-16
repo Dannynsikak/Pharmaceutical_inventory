@@ -40,7 +40,7 @@ const UpdatePrice = () => {
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Update Medicine Price</h2>
-      {message && <p className="text-red-500">{message}</p>}
+      {message && <p className="text-green-600">{message}</p>}
       <div className="mb-4">
         <label htmlFor="medicine-id" className="block mb-2">
           Medicine ID:

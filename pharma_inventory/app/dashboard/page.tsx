@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import StockComponent from "../components/PharmaInventory";
 import PurchaseForm from "../components/Procurement";
 import SaleForm from "../components/SalesRecord";
-import Navbar from "../components/Navbar";
+import Navbar2 from "../components/Navbar2";
 import UpdatePrice from "../components/UpdatePrice";
 
 const Dashboard = () => {
@@ -38,7 +38,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar2 />
       <div className="container mx-auto mt-8">
         <h1 className="text-3xl font-bold mb-6">
           Pharmaceutical Inventory Dashboard
