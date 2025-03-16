@@ -28,4 +28,4 @@ app.include_router(inventory.router, prefix="/api")
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to the Pharmaceutical Inventory System"}
+    return {"message": "Welcome to the Pharmaceutical Inventory System"} # uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

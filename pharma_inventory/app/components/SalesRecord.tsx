@@ -1,17 +1,17 @@
 "use client";
 import { useState } from "react";
 
-interface PurchaseFormProps {
-  onPurchaseRecorded: () => void; // Callback to refresh inventory list
+interface SaleFormProps {
+  onSaleRecorded: () => void; // Callback to refresh inventory
 }
 
-const PurchaseForm: React.FC<PurchaseFormProps> = ({ onPurchaseRecorded }) => {
+const SaleForm: React.FC<SaleFormProps> = ({ onSaleRecorded }) => {
   const [medicineId, setMedicineId] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handlePurchase = async (e: React.FormEvent) => {
+  const handleSale = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
@@ -22,7 +22,7 @@ const PurchaseForm: React.FC<PurchaseFormProps> = ({ onPurchaseRecorded }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:8000/api/purchases/", {
+      const res = await fetch("http://localhost:8000/api/sales/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,23 +35,23 @@ const PurchaseForm: React.FC<PurchaseFormProps> = ({ onPurchaseRecorded }) => {
         const errText = await res.text();
         throw new Error(errText);
       }
-      setSuccess("Purchase recorded successfully.");
-      onPurchaseRecorded(); // Refresh inventory list
+      setSuccess("Sale recorded successfully.");
+      onSaleRecorded(); // Refresh inventory list
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
+        setError(err.message || "Failed to record sale.");
       } else {
-        setError("Failed to record purchase.");
+        setError("Failed to record sale.");
       }
     }
   };
 
   return (
     <div className="p-4 bg-white shadow-md rounded-lg mt-4">
-      <h3 className="text-xl font-bold mb-2">Record a Purchase</h3>
+      <h3 className="text-xl font-bold mb-2">Record a Sale</h3>
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">{success}</p>}
-      <form onSubmit={handlePurchase} className="space-y-4">
+      <form onSubmit={handleSale} className="space-y-4">
         <div>
           <label htmlFor="medicineId" className="block">
             Medicine ID:
@@ -67,7 +67,7 @@ const PurchaseForm: React.FC<PurchaseFormProps> = ({ onPurchaseRecorded }) => {
         </div>
         <div>
           <label htmlFor="quantity" className="block">
-            Quantity Purchased:
+            Quantity Sold:
           </label>
           <input
             id="quantity"
@@ -80,13 +80,13 @@ const PurchaseForm: React.FC<PurchaseFormProps> = ({ onPurchaseRecorded }) => {
         </div>
         <button
           type="submit"
-          className="bg-green-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 text-white px-4 py-2 rounded"
         >
-          Record Purchase
+          Record Sale
         </button>
       </form>
     </div>
   );
 };
 
-export default PurchaseForm;
+export default SaleForm;

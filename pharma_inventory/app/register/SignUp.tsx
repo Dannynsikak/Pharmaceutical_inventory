@@ -2,16 +2,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
 
     try {
@@ -34,7 +38,11 @@ const SignUp = () => {
 
       const data = await res.json();
       console.log("Success:", data);
-      router.push("/login"); // Redirect after successful signup
+
+      // Store the user token in local storage
+      localStorage.setItem("userToken", data.access_token);
+
+      router.push("/dashboard"); // Redirect after successful signup
     } catch (err) {
       console.error("Error:", err);
       if (err instanceof Error) {
@@ -44,6 +52,8 @@ const SignUp = () => {
       } else {
         setError("An unexpected error occurred. Please try again.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,7 +63,7 @@ const SignUp = () => {
       <div className="container mx-auto mt-10 max-w-md">
         <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form className="space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-1">
               Name
@@ -96,12 +106,23 @@ const SignUp = () => {
               className="w-full p-2 border rounded"
             />
           </div>
-          <button
+          <Button
+            variant="outline"
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded"
+            onClick={handleSubmit}
+            disabled={loading}
           >
-            Register
-          </button>
+            {loading ? (
+              <div className="flex">
+                {" "}
+                <Loader2 className="w-5 h-5 animate-spin" />{" "}
+                Resgistering...{" "}
+              </div>
+            ) : (
+              "Register"
+            )}
+          </Button>
         </form>
       </div>
     </>

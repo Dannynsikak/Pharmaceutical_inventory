@@ -13,8 +13,8 @@ class UserResponse(BaseModel):
     email: EmailStr
     role: str
 
-    class Config:
-        from_attributes = True  # For Pydantic v2
+    model_config = { "from_attributes": True }  # Pydantic v2
+
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -36,6 +36,7 @@ class MedicineBase(BaseModel):
     strength: Optional[str] = None
     indication: Optional[str] = None
     classification: Optional[str] = None
+    price: float
 
 class MedicineCreate(MedicineBase):
     pass
@@ -44,8 +45,8 @@ class MedicineResponse(MedicineBase):
     id: int
     supplier_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = { "from_attributes": True }  # Pydantic v2
+
 
 class SaleBase(BaseModel):
     medicine_id: int
@@ -60,7 +61,7 @@ class SaleResponse(SaleBase):
     date_sold: datetime
 
     model_config = {
-        "arbitrary_types_allowed": True
+        "arbitrary_types_allowed": True, "from_attributes": True
     }
 
 class PurchaseBase(BaseModel):
@@ -75,5 +76,8 @@ class PurchaseResponse(PurchaseBase):
     date_purchased: datetime
 
     model_config = {
-        "arbitrary_types_allowed": True
+        "arbitrary_types_allowed": True, "from_attributes": True
     }
+
+class PriceUpdateRequest(BaseModel):
+    new_price: float
