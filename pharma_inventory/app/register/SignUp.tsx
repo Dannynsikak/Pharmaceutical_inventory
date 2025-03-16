@@ -34,7 +34,11 @@ const SignUp = () => {
 
       const data = await res.json();
       console.log("Success:", data);
-      router.push("/login"); // Redirect after successful signup
+
+      // Store the user token in local storage
+      localStorage.setItem("userToken", data.access_token);
+
+      router.push("/dashboard"); // Redirect after successful signup
     } catch (err) {
       console.error("Error:", err);
       if (err instanceof Error) {

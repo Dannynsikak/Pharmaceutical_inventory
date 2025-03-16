@@ -23,8 +23,8 @@ const Login = () => {
       if (res.ok) {
         const data = await res.json();
         // Save token to localStorage (or a state management solution)
-        localStorage.setItem("access_token", data.access_token);
-        router.push("/");
+        localStorage.setItem("userToken", data.access_token);
+        router.push("/dashboard");
       } else {
         const data = await res.json();
         setError(data.detail || "Invalid credentials");
@@ -78,6 +78,12 @@ const Login = () => {
             Login
           </button>
         </form>
+        <p className="mt-4 text-center">
+          Don&apos;t have an account?{" "}
+          <a href="/register" className="text-blue-600">
+            Sign Up here
+          </a>
+        </p>
       </div>
     </>
   );

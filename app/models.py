@@ -29,6 +29,8 @@ class Medicine(Base):
     strength = Column(String, nullable=True)
     indication = Column(String, nullable=True)
     classification = Column(String, nullable=True)
+    price = Column(Float, nullable=False)  # Ensure this field exists
+
     
     supplier = relationship("Supplier", back_populates="medicines")
 
