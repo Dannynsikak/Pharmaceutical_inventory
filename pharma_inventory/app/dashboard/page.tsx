@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import StockComponent from "../components/PharmaInventory";
 import PurchaseForm from "../components/Procurement";
-import SaleForm from "../components/SalesRecord";
+// import SaleForm from "../components/SalesRecord";
 import Navbar2 from "../components/Navbar2";
 import UpdatePrice from "../components/UpdatePrice";
 
@@ -44,7 +44,7 @@ const Dashboard = () => {
           Pharmaceutical Inventory Dashboard
         </h1>
         <StockComponent key={refresh ? "refresh" : "no-refresh"} />
-        <SaleForm onSaleRecorded={handleRefresh} />
+        {/* <SaleForm onSaleRecorded={handleRefresh} /> */}
         <PurchaseForm onPurchaseRecorded={handleRefresh} />
         <UpdatePrice />
       </div>

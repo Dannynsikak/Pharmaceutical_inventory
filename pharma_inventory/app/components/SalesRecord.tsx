@@ -1,8 +1,10 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 interface SaleFormProps {
-  onSaleRecorded: () => void; // Callback to refresh inventory
+  onSaleRecorded: () => void;
 }
 
 const SaleForm: React.FC<SaleFormProps> = ({ onSaleRecorded }) => {
@@ -10,14 +12,17 @@ const SaleForm: React.FC<SaleFormProps> = ({ onSaleRecorded }) => {
   const [quantity, setQuantity] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSale = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+    setLoading(true);
     const token = localStorage.getItem("userToken");
     if (!token) {
       setError("Not authenticated");
+      setLoading(false);
       return;
     }
 
@@ -35,14 +40,21 @@ const SaleForm: React.FC<SaleFormProps> = ({ onSaleRecorded }) => {
         const errText = await res.text();
         throw new Error(errText);
       }
-      setSuccess("Sale recorded successfully.");
-      onSaleRecorded(); // Refresh inventory list
+      // Reset quantity
+      setTimeout(() => {
+        onSaleRecorded();
+        setMedicineId(0); // Reset medicineId
+        setQuantity(0); // Refresh inventory list after a delay
+        setLoading(false);
+        setSuccess("Sale recorded successfully.");
+      }, 2000); // 2 seconds delay
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message || "Failed to record sale.");
       } else {
         setError("Failed to record sale.");
       }
+      setLoading(false);
     }
   };
 
@@ -78,12 +90,20 @@ const SaleForm: React.FC<SaleFormProps> = ({ onSaleRecorded }) => {
             required
           />
         </div>
-        <button
+        <Button
+          variant={"outline"}
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded"
+          disabled={loading}
         >
-          Record Sale
-        </button>
+          {loading ? (
+            <div className="flex gap-2">
+              <Loader2 className="w-5 h-5 animate-spin" /> Recording...
+            </div>
+          ) : (
+            "Record Sales"
+          )}
+        </Button>
       </form>
     </div>
   );

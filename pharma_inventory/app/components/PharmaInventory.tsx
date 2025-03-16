@@ -120,7 +120,8 @@ const StockComponent = () => {
           Page {currentPage} of {totalPages}
         </span>
 
-        <button
+        <Button
+          variant="outline"
           type="button"
           className={`px-4 py-2 mx-2 rounded ${
             currentPage === totalPages
@@ -131,7 +132,7 @@ const StockComponent = () => {
           disabled={currentPage === totalPages}
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );
