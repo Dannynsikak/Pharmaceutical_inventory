@@ -20,6 +20,7 @@ const Navbar2 = () => {
             { href: "/", label: "Home" },
             { href: "/purchase", label: "Record Purchase" },
             { href: "/record", label: "Record Sale" },
+            { href: "/addmedicine", label: "Add Entry for Medicines" },
           ].map(({ href, label }) => (
             <button
               type="button"
@@ -27,7 +28,7 @@ const Navbar2 = () => {
               onClick={() => handleClick(href)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
                 loading === href
-                  ? " text-gray-600 hover:bg-indigo-700"
+                  ? " text-gray-600"
                   : "text-gray-600 hover:text-indigo-600"
               }`}
             >
