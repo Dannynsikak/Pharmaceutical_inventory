@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
-from app.routes import users, medicines, inventory
+from app.routes import users, medicines, inventory, AIModels
 app = FastAPI(title="Pharmaceutical Inventory System")
+
 
 # Set up CORS
 origins = [
@@ -24,6 +25,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(medicines.router, prefix="/medicines", tags=["Medicines"])
 app.include_router(inventory.router, prefix="/api")
+app.include_router(AIModels.router, prefix="/aimodel")
 
 
 @app.get("/")

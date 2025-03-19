@@ -35,7 +35,6 @@ df['reorder_level'] = 10
 
 df['price'] = 100.0  # Set as a float value
 
-
 # Reorder the columns to match your model and also include the extra details
 final_columns = [
     'name', 'batch_no', 'stock', 'expiry_date', 'supplier', 'reorder_level',

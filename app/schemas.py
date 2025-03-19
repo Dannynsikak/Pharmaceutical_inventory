@@ -24,6 +24,21 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class SupplierBase(BaseModel):
+    name: str
+    contact_info: str
+
+class SupplierCreate(SupplierBase):
+    pass
+
+class SupplierResponse(SupplierBase):
+    id: int
+
+    model_config = {
+        "arbitrary_types_allowed": True, "from_attributes": True
+    }
+
+
 # Updated Medicine schemas reflecting the new fields
 class MedicineBase(BaseModel):
     name: str
@@ -43,7 +58,8 @@ class MedicineCreate(MedicineBase):
 
 class MedicineResponse(MedicineBase):
     id: int
-    supplier_id: int
+    supplier: Optional[SupplierResponse]  # Include supplier details instead of just supplier_id
+
 
     model_config = { "from_attributes": True }  # Pydantic v2
 
@@ -81,3 +97,4 @@ class PurchaseResponse(PurchaseBase):
 
 class PriceUpdateRequest(BaseModel):
     new_price: float
+

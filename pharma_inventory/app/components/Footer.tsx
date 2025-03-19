@@ -8,7 +8,13 @@ const Footer = () => {
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         {/* Left Section: Logo and Mission */}
         <div className="mb-6 md:mb-0 md:w-1/2">
-          <Image src="/logo.png" alt="Atombeat Logo" width={150} height={50} />
+          <Image
+            src="/pharmacist2.png"
+            alt="Logo"
+            width={40}
+            height={40}
+            className="max-w-[100%] rounded-md"
+          />
           <p className="mt-4 text-sm text-gray-300">
             Our mission is to democratize computational drug discovery tools and
             empower researchers and organizations worldwide.
@@ -30,26 +36,11 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="/platform" className="text-white hover:text-gray-400">
-                Platform
-              </Link>
-            </li>
-            <li>
               <Link
-                href="/solutions"
+                href="/learnmore"
                 className="text-white hover:text-gray-400"
               >
-                Solutions
-              </Link>
-            </li>
-            <li>
-              <Link href="/company" className="text-white hover:text-gray-400">
-                Company
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="text-white hover:text-gray-400">
-                Contact Us
+                Learn More
               </Link>
             </li>
           </ul>
@@ -58,7 +49,7 @@ const Footer = () => {
 
       {/* Bottom Section: Copyright & Links */}
       <div className="border-t border-gray-600 mt-8 pt-4 text-center text-gray-400 text-sm">
-        <p>Copyright 2025© atombeat. All Rights Reserved</p>
+        <p>Copyright 2025© . All Rights Reserved</p>
         <div className="mt-2">
           <Link href="/privacy-policy" className="hover:text-white">
             Privacy Policy
