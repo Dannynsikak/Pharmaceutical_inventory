@@ -45,7 +45,7 @@ const Navbar = () => {
               }`}
             >
               {loading === href ? (
-                <span className="w-4 h-4 border-2 border-white border-t-transparent animate-spin rounded-full" />
+                <span className="w-4 h-4 border-2 border-gray-500 border-t-transparent animate-spin rounded-full" />
               ) : (
                 label
               )}

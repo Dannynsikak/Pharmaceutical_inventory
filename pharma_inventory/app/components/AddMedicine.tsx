@@ -1,5 +1,15 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState, useEffect } from "react";
 
 interface Supplier {
@@ -98,105 +108,103 @@ const AddMedicine = () => {
 
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">{success}</p>}
-
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Medicine Name */}
-        <label className="block">
-          Medicine Name:
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="name">Medicine Name</Label>
+          <Input
+            id="name"
             type="text"
             name="name"
             placeholder="Enter medicine name"
             value={medicine.name}
             onChange={handleChange}
-            className="w-full p-2 border rounded mt-1"
             required
-            title="Enter the name of the medicine"
           />
-        </label>
+        </div>
 
         {/* Batch No */}
-        <label className="block">
-          Batch No:
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="batch_no">Batch No</Label>
+          <Input
+            id="batch_no"
             type="text"
             name="batch_no"
             placeholder="Enter batch number"
             value={medicine.batch_no}
             onChange={handleChange}
-            className="w-full p-2 border rounded mt-1"
             required
           />
-        </label>
+        </div>
 
         {/* Stock */}
-        <label className="block">
-          Stock:
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="stock">Stock</Label>
+          <Input
+            id="stock"
             type="number"
             name="stock"
             placeholder="Enter stock quantity"
             value={medicine.stock}
             onChange={handleChange}
-            className="w-full p-2 border rounded mt-1"
             required
           />
-        </label>
+        </div>
 
         {/* Expiry Date */}
-        <label className="block">
-          Expiry Date:
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="expiry_date">Expiry Date</Label>
+          <Input
+            id="expiry_date"
             type="date"
             name="expiry_date"
             value={medicine.expiry_date}
             onChange={handleChange}
-            className="w-full p-2 border rounded mt-1"
             required
           />
-        </label>
+        </div>
 
         {/* Price */}
-        <label className="block">
-          Price:
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="price">Price</Label>
+          <Input
+            id="price"
             type="number"
             name="price"
             placeholder="Enter price"
             value={medicine.price}
             onChange={handleChange}
-            className="w-full p-2 border rounded mt-1"
             required
           />
-        </label>
+        </div>
 
         {/* Supplier Selection */}
-        <label className="block">
-          Supplier:
-          <select
+        <div className="space-y-2">
+          <Label htmlFor="supplier_id">Supplier</Label>
+          <Select
             name="supplier_id"
             value={medicine.supplier_id}
-            onChange={handleChange}
-            className="w-full p-2 border rounded mt-1"
-            required
+            onValueChange={(value) =>
+              setMedicine({ ...medicine, supplier_id: value })
+            }
           >
-            <option value="">Select Supplier</option>
-            {suppliers.map((supplier) => (
-              <option key={supplier.id} value={supplier.id}>
-                {supplier.name}
-              </option>
-            ))}
-          </select>
-        </label>
+            <SelectTrigger id="supplier_id">
+              <SelectValue placeholder="Select Supplier" />
+            </SelectTrigger>
+            <SelectContent>
+              {suppliers.map((supplier) => (
+                <SelectItem key={supplier.id} value={supplier.id.toString()}>
+                  {supplier.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-500 text-white p-2 rounded mt-2"
-        >
+        <Button type="submit" disabled={loading} className="w-full">
           {loading ? "Adding..." : "Add Medicine"}
-        </button>
+        </Button>
       </form>
     </div>
   );

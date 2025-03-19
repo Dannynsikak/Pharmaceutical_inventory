@@ -124,72 +124,83 @@ The solution stands out by integrating a simple AI model that predicts the numbe
 ### **Backend Setup**
 
 1. **Clone the repository:**
+
    ```
-   git clone https://github.com/your-username/pharmaceutical_inventory.git
+   git clone git@github.com:Dannynsikak/Pharmaceutical_inventory.git
    cd pharmaceutical_inventory
    Create and activate a virtual environment:
    ```
 
-python -m venv .venv
-source .venv/bin/activate # On Windows: .venv\Scripts\activate
-Install dependencies:
+   python -m venv .venv
+   source .venv/bin/activate # On Windows: .venv\Scripts\activate
+   Install dependencies:
 
-pip install -r requirements.txt
-Configure environment variables: Create a .env file with your database URL and secret key:
+   pip install -r requirements.txt
+   Configure environment variables: Create a .env file with your database URL and secret key:
 
-env
+   env
 
-DATABASE_URL=postgresql://user:password@localhost/pharma_db
-SECRET_KEY=your_secret_key
-Run database migrations:
+   DATABASE_URL=postgresql://user:password@localhost/pharma_db
+   SECRET_KEY=your_secret_key
+   Run database migrations:
 
-alembic upgrade head
-Start the FastAPI server:
+   alembic upgrade head
+   Start the FastAPI server:
 
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-Frontend Setup
-Navigate to the frontend directory:
+   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+   Frontend Setup
+   Navigate to the frontend directory:
 
-cd pharma_inventory # or wherever your Next.js app is located
-Install dependencies using pnpm (or npm/yarn):
+   cd pharma_inventory # or wherever your Next.js app is located
+   Install dependencies using pnpm (or npm/yarn):
 
-pnpm install
-Start the Next.js development server:
+   pnpm install
+   Start the Next.js development server:
 
-pnpm dev
-Usage
-Access the Landing Page:
-The landing page (blog page) provides an overview of the system’s impact and benefits.
+   pnpm dev
+   Usage
+   Access the Landing Page:
+   The landing page (blog page) provides an overview of the system’s impact and benefits.
 
 Dashboard:
-Log in to view the inventory dashboard, which includes:
 
-A paginated table of medicines.
-Stock alerts (low stock, expired).
-AI-based restock predictions.
-Options to add, update, and delete medicine entries.
+    Log in to view the inventory dashboard, which includes:
+    A paginated table of medicines.
+    Stock alerts (low stock, expired).
+    AI-based restock predictions.
+    Options to add, update, and delete medicine entries.
+
 Authentication:
-Secure login and registration flows ensure only authorized users can access the inventory data.
+
+    Secure login and registration flows ensure only authorized users can access the inventory data.
 
 AI Predictions:
-The system uses historical sales data to predict restock timings. If there is insufficient data, it shows a fallback message.
+
+    The system uses historical sales data to predict restock timings. If there is insufficient data, it shows a fallback message.
 
 AI Integration
-The AI module in the backend calculates the average daily sales over the last 7 days and predicts the number of days until a medicine needs restocking.
+
+    The AI module in the backend calculates the average daily sales over the last 7 days and predicts the number of days until a medicine needs restocking.
 
 Prediction Endpoint:
-GET /aimodel/predict-restock/{medicine_id} returns a JSON response with the predicted days until restock.
-Model Logic:
-python
 
-def predict_restock(medicine_id, sales_data):
-avg_sales = np.mean(sales_data[-7:]) # Last 7 days avg
-current_stock = sales_data[-1]
-days_left = current_stock / avg_sales if avg_sales > 0 else 0
-return days_left
+    GET /aimodel/predict-restock/{medicine_id} returns a JSON response with the predicted days until restock.
+
+Model Logic:
+
+    python
+    def predict_restock(medicine_id, sales_data):
+    avg_sales = np.mean(sales_data[-7:]) # Last 7 days avg
+    current_stock = sales_data[-1]
+    days_left = current_stock / avg_sales if avg_sales > 0 else 0
+    return days_left
+
 UI Integration:
-The frontend fetches predictions and displays them in the inventory table. If stock is above 50, it displays "Stock is sufficient". If below 30, it shows "Needs to restock", along with the AI prediction if available.
-Future Improvements
+
+    The frontend fetches predictions and displays them in the inventory table. If stock is above 50, it displays "Stock is sufficient". If below 30, it shows "Needs to restock", along with the AI prediction.
+
+# Future Improvements
+
 Enhanced AI Models:
 Integrate advanced machine learning models (e.g., using TensorFlow or PyTorch) for more accurate predictions.
 Real-Time Data:
