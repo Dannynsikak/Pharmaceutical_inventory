@@ -101,3 +101,18 @@ def update_medicine_price(
     db.commit()
     db.refresh(db_medicine)
     return db_medicine
+
+# get all suppliers 
+@router.get("/suppliers/", response_model=list[schemas.SupplierResponse])
+def get_suppliers(db: Session = Depends(get_db)):
+    return db.query(models.Supplier).all()
+
+# create a new supplier
+
+@router.post("/suppliers/", response_model=schemas.SupplierResponse)
+def create_supplier(supplier: schemas.SupplierCreate, db: Session = Depends(get_db)):
+    db_supplier = models.Supplier(**supplier.model_dump())
+    db.add(db_supplier)
+    db.commit()
+    db.refresh(db_supplier)
+    return db_supplier

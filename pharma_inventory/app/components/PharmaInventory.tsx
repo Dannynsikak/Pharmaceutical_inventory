@@ -9,24 +9,22 @@ interface Medicine {
   stock: number;
   expiry_date: string;
   batch_no: string;
-  category?: string;
-  dosage_form?: string;
-  strength?: string;
-  indication?: string;
-  classification?: string;
-  supplier_id: number;
   price: number;
 }
 
 const StockComponent = () => {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
+  const [restockPredictions, setRestockPredictions] = useState<
+    Record<number, string>
+  >({});
+
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 5;
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const fetchMedicines = async () => {
       const token = localStorage.getItem("userToken");
       if (!token) {
         router.push("/login");
@@ -54,19 +52,80 @@ const StockComponent = () => {
 
         const data = await res.json();
         setMedicines(data);
+
+        // For each medicine, check stock and set prediction
+        for (const med of data) {
+          if (med.stock >= 50) {
+            // If stock is sufficient, no need for prediction
+            setRestockPredictions((prev) => ({
+              ...prev,
+              [med.id]: "Stock is sufficient",
+            }));
+          } else {
+            // Otherwise, fetch the AI prediction
+            fetchRestockPrediction(med.id);
+          }
+        }
       } catch (err) {
         console.error("Fetch error:", err);
         setError("Failed to load medicines.");
       }
     };
 
-    checkAuthentication();
+    fetchMedicines();
   }, [router]);
 
-  // Calculate total pages
-  const totalPages = Math.ceil(medicines.length / itemsPerPage);
+  const fetchRestockPrediction = async (medicineId: number) => {
+    try {
+      const res = await fetch(
+        `http://localhost:8000/aimodel/predict-restock/${medicineId}`
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch prediction");
+      }
+      const data = await res.json();
 
-  // Get medicines for the current page
+      if (data.message) {
+        // E.g. "Not enough data for prediction"
+        setRestockPredictions((prev) => ({
+          ...prev,
+          [medicineId]: data.message,
+        }));
+      } else if (data.days_until_restock !== undefined) {
+        const formatted = formatRestockTime(data.days_until_restock);
+        setRestockPredictions((prev) => ({ ...prev, [medicineId]: formatted }));
+      }
+    } catch (error) {
+      setRestockPredictions((prev) => ({
+        ...prev,
+        [medicineId]: "No prediction",
+      }));
+      console.error(`Error fetching restock for ID ${medicineId}:`, error);
+    }
+  };
+
+  // Convert days to a readable string
+  const formatRestockTime = (days: number) => {
+    // If days is NaN or negative
+    if (!days || days < 0) return "No data";
+
+    if (days >= 1) {
+      // Round to integer or 1 decimal
+      const rounded = Math.round(days);
+      return `${rounded} days`;
+    }
+    const hours = Math.round(days * 24);
+    return `${hours} hours`;
+  };
+
+  // Decide if "Still in stock" or "Needs to restock"
+  const displayStockStatus = (stock: number) => {
+    if (stock > 50) return "Still in stock";
+    if (stock < 30) return "Needs to restock";
+    return "";
+  };
+
+  const totalPages = Math.ceil(medicines.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentMedicines = medicines.slice(indexOfFirstItem, indexOfLastItem);
@@ -83,6 +142,8 @@ const StockComponent = () => {
             <th className="border p-2">Expiry Date</th>
             <th className="border p-2">Batch No</th>
             <th className="border p-2">Price ($)</th>
+            <th className="border p-2">Restock In</th>
+            <th className="border p-2">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -95,21 +156,20 @@ const StockComponent = () => {
               </td>
               <td className="border p-2">{med.batch_no}</td>
               <td className="border p-2">${med.price.toFixed(2)}</td>
+              <td className="border p-2">
+                {restockPredictions[med.id] || "Loading..."}
+              </td>
+              <td className="border p-2">{displayStockStatus(med.stock)}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Pagination Controls */}
       <div className="flex justify-center items-center mt-4">
         <Button
           variant="outline"
           type="button"
-          className={`px-4 py-2 mx-2 rounded ${
-            currentPage === 1
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 text-white"
-          }`}
+          className={`px-4 py-2 mx-2 rounded ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
         >
@@ -123,11 +183,7 @@ const StockComponent = () => {
         <Button
           variant="outline"
           type="button"
-          className={`px-4 py-2 mx-2 rounded ${
-            currentPage === totalPages
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 text-white"
-          }`}
+          className={`px-4 py-2 mx-2 rounded ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPages}
         >

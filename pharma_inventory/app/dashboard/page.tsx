@@ -5,6 +5,8 @@ import PurchaseForm from "../components/Procurement";
 // import SaleForm from "../components/SalesRecord";
 import Navbar2 from "../components/Navbar2";
 import UpdatePrice from "../components/UpdatePrice";
+import Footer from "../components/Footer";
+import AddMedicine from "../components/AddMedicine";
 
 const Dashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,9 +47,11 @@ const Dashboard = () => {
         </h1>
         <StockComponent key={refresh ? "refresh" : "no-refresh"} />
         {/* <SaleForm onSaleRecorded={handleRefresh} /> */}
-        <PurchaseForm onPurchaseRecorded={handleRefresh} />
+        {/* <PurchaseForm onPurchaseRecorded={handleRefresh} /> */}
         <UpdatePrice />
+        <AddMedicine />
       </div>
+      <Footer />
     </div>
   );
 };
