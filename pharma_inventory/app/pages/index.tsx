@@ -3,6 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import Footer from "../components/Footer";
 import HeroSection from "../components/HeroSection";
+import SalesTrendsChart from "../components/SalesTrendChart";
+import StockComponent from "../components/PharmaInventory";
+import StockLevel from "../components/StockLevelChart";
 
 export default function HomePage() {
   return (
@@ -53,6 +56,8 @@ export default function HomePage() {
       <main>
         <HeroSection />
       </main>
+      <SalesTrendsChart />
+      <StockLevel />
 
       {/* Footer */}
       <Footer />

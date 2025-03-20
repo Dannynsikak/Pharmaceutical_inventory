@@ -27,7 +27,7 @@ const Navbar = () => {
         </h1>
 
         {/* Navigation Links */}
-        <div className="hidden md:flex space-x-6">
+        <div className="hidden md:flex space-x-6 *:cursor-pointer">
           {[
             { href: "/", label: "Home" },
             { href: "/dashboard", label: "Dashboard" },
