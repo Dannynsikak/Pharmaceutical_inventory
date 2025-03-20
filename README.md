@@ -127,7 +127,7 @@ The solution stands out by integrating a simple AI model that predicts the numbe
 
    ```
    git clone git@github.com:Dannynsikak/Pharmaceutical_inventory.git
-   cd pharmaceutical_inventory
+   cd Pharmaceutical_inventory
    Create and activate a virtual environment:
    ```
 
@@ -148,19 +148,21 @@ The solution stands out by integrating a simple AI model that predicts the numbe
    Start the FastAPI server:
 
    uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-   Frontend Setup
-   Navigate to the frontend directory:
 
-   cd pharma_inventory # or wherever your Next.js app is located
-   Install dependencies using pnpm (or npm/yarn):
+### **Frontend Setup**
 
-   pnpm install
-   Start the Next.js development server:
+    Navigate to the frontend directory:
 
-   pnpm dev
-   Usage
-   Access the Landing Page:
-   The landing page (blog page) provides an overview of the system’s impact and benefits.
+    cd pharma_inventory #
+    Install dependencies using pnpm :
+
+    pnpm install
+    Start the Next.js development server:
+
+    pnpm run dev
+    Usage
+    Access the Landing Page:
+    The landing page (blog page) provides an overview of the system’s impact and benefits.
 
 Dashboard:
 
@@ -218,6 +220,6 @@ This project is licensed under the MIT License.
 
 # Contact
 
-For questions or further information, please contact your-email@example.com.
+For questions or further information, please contact nsikakdanny11@gmail.com.
 
 This README is designed to be comprehensive and SEO-friendly, highlighting the innovation, technical soundness, and scalability of the Pharmaceutical Inventory System.

@@ -18,6 +18,7 @@ interface Supplier {
 }
 
 const AddMedicine = () => {
+  // Initialize supplier_id as number (0 means "not selected")
   const [medicine, setMedicine] = useState({
     name: "",
     batch_no: "",
@@ -30,7 +31,7 @@ const AddMedicine = () => {
     indication: "",
     classification: "",
     price: 0,
-    supplier_id: "",
+    supplier_id: 0,
   });
 
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
@@ -55,11 +56,17 @@ const AddMedicine = () => {
     fetchSuppliers();
   }, []);
 
-  // Handle input changes
+  // Handle input changes for text and number fields
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setMedicine({ ...medicine, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    // If updating supplier_id, convert value to number
+    if (name === "supplier_id") {
+      setMedicine({ ...medicine, supplier_id: Number(value) });
+    } else {
+      setMedicine({ ...medicine, [name]: value });
+    }
   };
 
   // Handle form submission
@@ -68,6 +75,13 @@ const AddMedicine = () => {
     setLoading(true);
     setError(null);
     setSuccess(null);
+
+    // Check if a valid supplier is selected
+    if (medicine.supplier_id === 0) {
+      setError("Please select a supplier.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:8000/api/medicines/", {
@@ -81,6 +95,7 @@ const AddMedicine = () => {
       }
 
       setSuccess("Medicine added successfully!");
+      // Reset form
       setMedicine({
         name: "",
         batch_no: "",
@@ -93,7 +108,7 @@ const AddMedicine = () => {
         indication: "",
         classification: "",
         price: 0,
-        supplier_id: "",
+        supplier_id: 0,
       });
     } catch (err) {
       setError("Error adding medicine");
@@ -183,9 +198,9 @@ const AddMedicine = () => {
           <Label htmlFor="supplier_id">Supplier</Label>
           <Select
             name="supplier_id"
-            value={medicine.supplier_id}
+            value={medicine.supplier_id ? medicine.supplier_id.toString() : ""}
             onValueChange={(value) =>
-              setMedicine({ ...medicine, supplier_id: value })
+              setMedicine({ ...medicine, supplier_id: Number(value) })
             }
           >
             <SelectTrigger id="supplier_id">
