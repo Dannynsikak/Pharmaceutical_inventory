@@ -16,6 +16,7 @@ A robust software application designed to manage and track the stock, procuremen
 - [Setup & Installation](#setup--installation)
 - [Usage](#usage)
 - [AI Integration](#ai-integration)
+- [Reporting & Analytics](#reporting--analytics)
 - [Future Improvements](#future-improvements)
 - [License](#license)
 - [Contact](#contact)
@@ -44,6 +45,8 @@ The Pharmaceutical Inventory System is a comprehensive solution that automates t
   - Secure registration and login functionality with JWT.
 - **Responsive UI:**
   - Modern frontend built with Next.js, TypeScript, Tailwind CSS, and ShadCN UI components.
+- **Reporting & Analytics:**
+  - Interactive dashboards displaying stock levels and sales trends using charts.
 
 ---
 
@@ -54,6 +57,21 @@ The solution stands out by integrating a simple AI model that predicts the numbe
 - **Proactive Inventory Management:** Automated suggestions for reordering help minimize stockouts and overstock situations.
 - **Enhanced Decision-Making:** Real-time data and AI predictions improve operational efficiency and cost management.
 - **Impact on Patient Care:** Timely restocking ensures the availability of essential medications, directly impacting patient outcomes.
+
+---
+
+## Reporting & Analytics
+
+The **Reporting & Analytics** module provides real-time insights into inventory stock levels and sales trends:
+
+- **Stock Level Visualization:**
+  - A dynamic chart displays the available stock for all medicines, allowing users to quickly assess inventory status.
+- **Sales Trends Analysis:**
+  - A visual representation of sales trends over time, helping users understand demand patterns and optimize stock replenishment.
+- **Enhanced Decision-Making:**
+  - Data-driven insights enable better forecasting and inventory control.
+
+This feature improves the system’s efficiency by providing pharmacy managers and healthcare providers with crucial data at a glance.
 
 ---
 
@@ -70,155 +88,28 @@ The solution stands out by integrating a simple AI model that predicts the numbe
 
 ---
 
-## Scalability
+## Future Improvements
 
-- **Modular Architecture:**  
-  The project is divided into clear modules for authentication, inventory management, and AI prediction, which allows independent scaling and maintenance.
-- **Database:**  
-  The use of PostgreSQL (or any relational database) with SQLAlchemy ensures efficient querying and data integrity as the dataset grows.
-- **Backend:**  
-  FastAPI supports asynchronous operations, making it well-suited for handling a large number of requests concurrently.
-- **Frontend:**  
-  Next.js enables server-side rendering and static site generation for improved performance and scalability.
-- **Future Enhancements:**  
-  As the user base and dataset grow, you can integrate caching mechanisms, load balancing, and a more advanced AI model to further improve performance.
-
----
-
-## System Architecture
-
-- **User Interface:**  
-  Next.js frontend with pages for inventory dashboard, login, registration, and blog/landing page.
-- **API Layer:**  
-  FastAPI endpoints handling CRUD operations for medicines, sales, and purchases, plus an AI endpoint for restock predictions.
-- **Database:**  
-  A relational database (e.g., PostgreSQL) managed with SQLAlchemy and migrations via Alembic.
-- **AI Module:**  
-  A Python-based module using NumPy to analyze historical sales and predict restock timings.
-- **Authentication:**  
-  JWT-based secure authentication integrated into both backend endpoints and frontend routing.
+- **Enhanced AI Models:**
+  - Integrate advanced machine learning models (e.g., using TensorFlow or PyTorch) for more accurate predictions.
+- **Real-Time Data:**
+  - Implement WebSocket support for live updates.
+- **User Role Management:**
+  - Fine-grained access controls based on user roles (e.g., admin, pharmacist, store manager).
+- **Mobile Responsiveness:**
+  - Further refine the UI for mobile devices.
+- **Advanced Reporting & Analytics:**
+  - Add more in-depth insights, predictive analytics, and downloadable reports.
 
 ---
 
-## Technologies Used
-
-- **Backend:**
-  - FastAPI
-  - SQLAlchemy
-  - Alembic
-  - Pydantic
-  - NumPy
-  - psycopg2 (PostgreSQL driver)
-- **Frontend:**
-  - Next.js
-  - TypeScript
-  - Tailwind CSS
-  - ShadCN UI components
-- **AI Integration:**
-  - A custom prediction function using NumPy for basic trend analysis
-
----
-
-## Setup & Installation
-
-### **Backend Setup**
-
-1. **Clone the repository:**
-
-   ```
-   git clone git@github.com:Dannynsikak/Pharmaceutical_inventory.git
-   cd Pharmaceutical_inventory
-   Create and activate a virtual environment:
-   ```
-
-   python -m venv .venv
-   source .venv/bin/activate # On Windows: .venv\Scripts\activate
-   Install dependencies:
-
-   pip install -r requirements.txt
-   Configure environment variables: Create a .env file with your database URL and secret key:
-
-   env
-
-   DATABASE_URL=postgresql://user:password@localhost/pharma_db
-   SECRET_KEY=your_secret_key
-   Run database migrations:
-
-   alembic upgrade head
-   Start the FastAPI server:
-
-   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-
-### **Frontend Setup**
-
-    Navigate to the frontend directory:
-
-    cd pharma_inventory #
-    Install dependencies using pnpm :
-
-    pnpm install
-    Start the Next.js development server:
-
-    pnpm run dev
-    Usage
-    Access the Landing Page:
-    The landing page (blog page) provides an overview of the system’s impact and benefits.
-
-Dashboard:
-
-    Log in to view the inventory dashboard, which includes:
-    A paginated table of medicines.
-    Stock alerts (low stock, expired).
-    AI-based restock predictions.
-    Options to add, update, and delete medicine entries.
-
-Authentication:
-
-    Secure login and registration flows ensure only authorized users can access the inventory data.
-
-AI Predictions:
-
-    The system uses historical sales data to predict restock timings. If there is insufficient data, it shows a fallback message.
-
-AI Integration
-
-    The AI module in the backend calculates the average daily sales over the last 7 days and predicts the number of days until a medicine needs restocking.
-
-Prediction Endpoint:
-
-    GET /aimodel/predict-restock/{medicine_id} returns a JSON response with the predicted days until restock.
-
-Model Logic:
-
-    python
-    def predict_restock(medicine_id, sales_data):
-    avg_sales = np.mean(sales_data[-7:]) # Last 7 days avg
-    current_stock = sales_data[-1]
-    days_left = current_stock / avg_sales if avg_sales > 0 else 0
-    return days_left
-
-UI Integration:
-
-    The frontend fetches predictions and displays them in the inventory table. If stock is above 50, it displays "Stock is sufficient". If below 30, it shows "Needs to restock", along with the AI prediction.
-
-# Future Improvements
-
-Enhanced AI Models:
-Integrate advanced machine learning models (e.g., using TensorFlow or PyTorch) for more accurate predictions.
-Real-Time Data:
-Implement WebSocket support for live updates.
-User Role Management:
-Fine-grained access controls based on user roles (e.g., admin, pharmacist, store manager).
-Mobile Responsiveness:
-Further refine the UI for mobile devices.
-Reporting & Analytics:
-Add detailed dashboards and reporting tools for inventory analytics.
-
-# License
+## License
 
 This project is licensed under the MIT License.
 
-# Contact
+---
+
+## Contact
 
 For questions or further information, please contact nsikakdanny11@gmail.com.
 
