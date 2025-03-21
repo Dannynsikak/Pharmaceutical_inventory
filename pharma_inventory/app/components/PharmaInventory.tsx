@@ -32,7 +32,7 @@ const StockComponent = () => {
         return;
       }
       try {
-        const res = await fetch("http://localhost:8000/medicines", {
+        const res = await fetch("http://localhost:8000/api/medicines", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -88,14 +88,12 @@ const StockComponent = () => {
       }
 
       const data = await res.json();
-      console.log(`Expiry response for ${medicineId}:`, data);
 
       setExpiredMedicines((prev) => {
         const updated = {
           ...prev,
           [medicineId]: data.expired ? "Expired" : "Not Expired",
         };
-        console.log("Updated expiredMedicines state:", updated);
         return updated;
       });
     } catch (error) {
@@ -141,6 +139,26 @@ const StockComponent = () => {
     }
   };
 
+  const deleteMedicine = async (medicineId: number) => {
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/medicines/${medicineId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to delete medicine");
+      }
+
+      setMedicines((prev) => prev.filter((med) => med.id !== medicineId));
+      alert("Medicine deleted successfully");
+    } catch (error) {
+      alert("Failed to delete medicine");
+    }
+  };
+
   // Format predicted restock time
   const formatRestockTime = (days: number) => {
     if (!days || days < 0) return "No data";
@@ -168,6 +186,7 @@ const StockComponent = () => {
             <th className="border p-2">Batch No</th>
             <th className="border p-2">Price ($)</th>
             <th className="border p-2">Restock In</th>
+            <th className="border p-2">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -184,6 +203,16 @@ const StockComponent = () => {
               <td className="border p-2">${med.price.toFixed(2)}</td>
               <td className="border p-2">
                 {restockPredictions[med.id] || "Loading..."}
+              </td>
+              <td className="border p-2">
+                {expiredMedicines[med.id] === "Expired" && (
+                  <Button
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    onClick={() => deleteMedicine(med.id)}
+                  >
+                    Delete
+                  </Button>
+                )}
               </td>
             </tr>
           ))}

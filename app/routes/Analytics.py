@@ -5,8 +5,6 @@ from app.database import get_db
 from sqlalchemy.sql import text
 
 
-
-
 router = APIRouter()
 
 @router.get("/sales-trends")
