@@ -6,5 +6,3 @@ alembic.ini
 app/dataset.csv
 
 medicine_dataset_cleaned.csv
-
-medicine_dataset_cleaned2.csv
