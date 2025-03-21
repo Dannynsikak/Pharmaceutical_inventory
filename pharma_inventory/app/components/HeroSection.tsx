@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -77,9 +77,12 @@ const HeroSection = () => {
             regulatory compliance.
           </p>
 
-          <Button className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
-            Learn More
-          </Button>
+          <Link
+            className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
+            href={"/inventory-analysis"}
+          >
+            Check Analytical Trends
+          </Link>
         </article>
       </main>
     </div>
